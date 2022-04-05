@@ -5,6 +5,7 @@ import java.io.Console;
 
 import board.Board;
 import board.CardList;
+import board.Displayable;
 import board.Player;
 import cards.Card;
 import cards.CardType;

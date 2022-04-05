@@ -5,7 +5,7 @@ import cards.Card;
 import java.util.Stack;
 
 public class CardPile {
-    private final Stack<Card> cPile;
+    private static Stack<Card> cPile;
 
     public CardPile() {
         cPile = new Stack<Card>();
@@ -20,7 +20,7 @@ public class CardPile {
     }
 
     public void shufflePile() {
-        cPile.shuffle();
+
     }
 
     public int pileSize() {

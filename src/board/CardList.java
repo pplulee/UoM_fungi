@@ -24,8 +24,6 @@ public class CardList {
     }
 
     public Card removeCardAt(int index) {
-        Card cardtype = cList.get(index);
-        cList.remove(index);
-        return cardtype;
+        return cList.remove(index);
     }
 }

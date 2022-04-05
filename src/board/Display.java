@@ -24,8 +24,6 @@ public class Display implements Displayable {
 
     @Override
     public Card removeElement(int num) {
-        Card tmp = getElementAt(num);
-        displayList.remove(num);
-        return tmp;
+        return displayList.remove(num);
     }
 }
