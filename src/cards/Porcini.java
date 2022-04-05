@@ -1,7 +1,9 @@
 package cards;
 
-public class Porcini extends Card {
+public class Porcini extends Mushroom {
     public Porcini(CardType type) {
-        super(type, "Porcini");
+        super(type, "porcini");
+        this.flavourPoints=3;
+        this.sticksPerMushroom=3;
     }
 }
