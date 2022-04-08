@@ -2,6 +2,7 @@ package board;
 
 import cards.Card;
 
+import java.util.Collections;
 import java.util.Stack;
 
 public class CardPile {
@@ -20,7 +21,7 @@ public class CardPile {
     }
 
     public void shufflePile() {
-
+        Collections.shuffle(cPile);
     }
 
     public int pileSize() {
@@ -28,7 +29,7 @@ public class CardPile {
     }
 
     public boolean isEmpty() {
-        return cPile.isEmpty();
+        return cPile.empty();
     }
 }
 
