@@ -5,10 +5,7 @@ import cards.Card;
 import java.util.ArrayList;
 
 public class Hand implements Displayable {
-    private static ArrayList<Card> handList;
-    public Hand() {
-        handList = new ArrayList<>();
-    }
+    private final ArrayList<Card> handList = new ArrayList<>();
 
     @Override
     public void add(Card card) {

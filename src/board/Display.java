@@ -5,7 +5,7 @@ import cards.Card;
 import java.util.ArrayList;
 
 public class Display implements Displayable {
-    private ArrayList<Card> displayList;
+    private final ArrayList<Card> displayList = new ArrayList<>();
 
     @Override
     public void add(Card card) {
