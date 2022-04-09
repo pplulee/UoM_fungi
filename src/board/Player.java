@@ -59,7 +59,12 @@ public class Player {
     }
 
     public void addCardtoHand(Card card) {
-        this.h.add(card);
+        if (card.getType()==CardType.BASKET){
+            this.d.add(card);
+            this.handlimit+=2;
+        }else{
+            this.h.add(card);
+        }
     }
 
     public void addCardtoDisplay(Card card) {
@@ -102,26 +107,35 @@ public class Player {
     }
 
     public boolean takeFromDecay() {
-        if (getHand().size() == getHandLimit()) {
-            return false;
-        }
-
         int basket_count = 0;
         for (int i = 0; i < Board.getDecayPile().size(); i++) {
             if (Board.getDecayPile().get(i).getType() == CardType.BASKET) {
                 basket_count++;
             }
         }
-        this.handlimit += basket_count * 2;
-
-        int max_can_take = Math.min(this.handlimit - this.h.size(), Board.getDecayPile().size());
-        for (int i = 0; i < max_can_take; i++) {
-            if (Board.getDecayPile().get(0).getType() == CardType.BASKET) {
-                this.d.add(Board.getDecayPile().remove(0));
-            } else {
-                this.h.add(Board.getDecayPile().remove(0));
+        if ((basket_count == 0 && getHandLimit()==getHand().size())||getHandLimit()-getHand().size()+(basket_count*2)<Board.getDecayPile().size()-basket_count) {
+            //no basket and hand is full
+            return false;
+        }
+        int cycle=Board.getDecayPile().size();
+        for (int i = 0; i < cycle; i++) {
+            Card card = Board.getDecayPile().get(0);
+            CardType type = card.getType();
+            switch (type) {
+                case BASKET:
+                    addCardtoDisplay(Board.getDecayPile().remove(0));
+                    handlimit+=2;
+                    break;
+                case STICK:
+                    addSticks(1);
+                    Board.getDecayPile().remove(0);
+                    break;
+                default:
+                    addCardtoHand(Board.getDecayPile().remove(0));
+                    break;
             }
         }
+
         return true;
     }
 
@@ -150,7 +164,7 @@ public class Player {
                         tmp = card;
                     }
                     card_count++;
-                    //flavourpoints+=?
+                    flavourpoints+= new EdibleItem(card.getType(),card.getName()).getFlavourPoints();
                     break;
                 case NIGHTMUSHROOM:
                     if (tmp!=null && !tmp.getName().equals(card.getName())){
