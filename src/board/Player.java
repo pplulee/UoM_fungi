@@ -185,6 +185,17 @@ public class Player {
     }
 
     public boolean putPanDown() {
-        return false;
+        int pan_index = -1;
+        for (int i = 0; i < getHand().size(); i++) {
+            if (getHand().getElementAt(i).getType() == CardType.PAN) {
+                pan_index = i;
+                break;
+            }
+        }
+        if (pan_index == -1) {
+            return false;
+        }
+        addCardtoDisplay(getHand().removeElement(pan_index));
+        return true;
     }
 }
