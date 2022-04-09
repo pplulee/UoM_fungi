@@ -1,9 +1,6 @@
 package board;
 
-import cards.Card;
-import cards.CardType;
-import cards.Mushroom;
-import cards.Pan;
+import cards.*;
 
 import java.util.ArrayList;
 
@@ -31,9 +28,27 @@ public class Player {
     }
     public void addSticks(int num){
         this.sticks+=num;
+        for (int i=0;i<num;i++){
+            getDisplay().add(new Stick());
+        }
     }
     public void removeSticks(int num){
         this.sticks-=num;
+        int count=0;
+        int index=-1;
+        while (count<num){
+            for (int i=0;i<getDisplay().size();i++){
+                if (getDisplay().getElementAt(i).getType()==CardType.STICK){
+                    count++;
+                    index=i;
+                    break;
+                }
+            }
+            if (index!=-1){
+                getDisplay().removeElement(index);
+                index=-1;
+            }
+        }
     }
     public Hand getHand(){
         return this.h;
@@ -52,7 +67,11 @@ public class Player {
     }
 
     public boolean takeCardFromTheForest(int position) {
-        if (position < 1 || position > 8 || getHand().size() == getHandLimit()) {
+        if (position < 1 || position > 8) {
+            return false;
+        }
+        Card card = Board.getForest().getElementAt(8 - position);
+        if (getHand().size() == getHandLimit() && card.getType() != CardType.BASKET && card.getType() != CardType.STICK) {
             return false;
         }
         if (position >= 3) {
@@ -63,16 +82,18 @@ public class Player {
                 return false;
             }
         }
-        Card card = Board.getForest().getElementAt(8 - position);
         switch (card.getType()) {
             case BASKET:
                 addCardtoDisplay(card);
-                this.handlimit += 2;
+                handlimit += 2;
                 break;
             case STICK:
                 addSticks(1);
                 break;
-            case DAYMUSHROOM:case NIGHTMUSHROOM:
+            case PAN:
+                addCardtoDisplay(card);
+                break;
+            default:
                 addCardtoHand(card);
                 break;
         }
