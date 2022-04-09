@@ -205,31 +205,30 @@ public class Player {
         cardname = cardname.replace("'", "");
         for (int i = 0; i < getHand().size(); i++) {
             if (getHand().getElementAt(i).getName().equals(cardname)) {
-                //card_count ++;
                 if (getHand().getElementAt(i).getType() == CardType.DAYMUSHROOM) {
-                    day_card_count+=1;
+                    day_card_count += 1;
                 } else if (getHand().getElementAt(i).getType() == CardType.NIGHTMUSHROOM) {
-                    night_card_count+=1;
+                    night_card_count += 1;
                 }
             }
         }
-        if (day_card_count+(night_card_count*2) < number || number < 2) {
+        if (day_card_count + (night_card_count * 2) < number || number < 2) {
             return false;
         }
         //Sell night mushroom first
         for (int i = 0; i < number; i++) {
             for (int j = 0; j < getHand().size(); j++) {
-                if (getHand().getElementAt(j).getName().equals(cardname)&&getHand().getElementAt(j).getType()==CardType.NIGHTMUSHROOM) {
-                    stick_gain += new Mushroom(getHand().getElementAt(j).getType(), getHand().getElementAt(j).getName()).getSticksPerMushroom()*2;
+                if (getHand().getElementAt(j).getName().equals(cardname) && getHand().getElementAt(j).getType() == CardType.NIGHTMUSHROOM) {
+                    stick_gain += new Mushroom(getHand().getElementAt(j).getType(), getHand().getElementAt(j).getName()).getSticksPerMushroom() * 2;
                     getHand().removeElement(j);
                     break;
                 }
             }
         }
-        if (number-night_card_count*2 > 0) {
-            for (int i = 0; i < number-night_card_count; i++) {
+        if (number - night_card_count * 2 > 0) {
+            for (int i = 0; i < number - night_card_count; i++) {
                 for (int j = 0; j < getHand().size(); j++) {
-                    if (getHand().getElementAt(j).getName().equals(cardname)&&getHand().getElementAt(j).getType()==CardType.DAYMUSHROOM) {
+                    if (getHand().getElementAt(j).getName().equals(cardname) && getHand().getElementAt(j).getType() == CardType.DAYMUSHROOM) {
                         stick_gain += new Mushroom(getHand().getElementAt(j).getType(), getHand().getElementAt(j).getName()).getSticksPerMushroom();
                         getHand().removeElement(j);
                         break;

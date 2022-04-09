@@ -77,15 +77,19 @@ public class Board {
             forestCardPile.addCard(new Basket());
         }
     }
-    public static CardPile getForestCardsPile(){
+
+    public static CardPile getForestCardsPile() {
         return forestCardPile;
     }
-    public static CardList getForest(){
+
+    public static CardList getForest() {
         return forest;
     }
-    public static ArrayList<Card> getDecayPile(){
+
+    public static ArrayList<Card> getDecayPile() {
         return decayPile;
     }
+
     public static void updateDecayPile() {
         if (decayPile.size() == 4) {
             decayPile.clear();
