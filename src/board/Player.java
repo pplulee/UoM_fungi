@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Player {
     private final Hand h = new Hand();
     private final Display d = new Display();
-    private final int score;
+    private int score;
     private int handlimit;
     private int sticks;
 
@@ -147,12 +147,15 @@ public class Player {
     public boolean cookMushrooms(ArrayList<Card> cards) {
         boolean haspan = false;
         Card tmp = null;
-        int card_count = 0;
+        int day_card_count = 0;
+        int night_card_count = 0;
         int butter_count = 0;
         int cider_count = 0;
         int flavourpoints = 0;
         for (Card card : cards) {
             switch (card.getType()) {
+                case BASKET:
+                    return false;
                 case PAN:
                     haspan = true;
                     break;
@@ -164,36 +167,75 @@ public class Player {
                     break;
                 case DAYMUSHROOM:
                     if (tmp != null && !tmp.getName().equals(card.getName())) {
+                        //not same type
                         return false;
                     } else {
                         tmp = card;
                     }
-                    card_count++;
+                    day_card_count++;
                     flavourpoints += new EdibleItem(card.getType(), card.getName()).getFlavourPoints();
                     break;
                 case NIGHTMUSHROOM:
                     if (tmp != null && !tmp.getName().equals(card.getName())) {
+                        //not same type
                         return false;
                     } else {
                         tmp = card;
                     }
-                    card_count += 2;
+                    night_card_count += 1;
+                    flavourpoints += new EdibleItem(card.getType(), card.getName()).getFlavourPoints() * 2;
                     break;
             }
         }
         for (int i = 0; i < this.d.size(); i++) {
             if (this.d.getElementAt(i).getType() == CardType.PAN) {
                 haspan = true;
+                break;
             }
         }
 
-        if (!haspan || card_count < 3) {
+        if (!haspan || 2 * night_card_count + day_card_count < 3) {
+            //no pan found or cards not enough
             return false;
         }
-        if (butter_count >= 1 && card_count < 4) {
-            return false;
+        if (butter_count + cider_count != 0) {
+            if (4 * butter_count + 5 * cider_count > 2 * night_card_count + day_card_count) {
+                //butter or cider not enough
+                return false;
+            } else {
+                flavourpoints += butter_count * 3 + cider_count * 5;
+            }
         }
-        return cider_count < 1 || card_count >= 5;
+        score += flavourpoints;
+        //remove mushroom card from hand
+        for (int i = 0; i < night_card_count + day_card_count; i++) {
+            for (int j = 0; j < getHand().size(); j++) {
+                if (getHand().getElementAt(j).getName().equals(tmp.getName()) && getHand().getElementAt(j).getType() == tmp.getType()) {
+                    getHand().removeElement(j);
+                    break;
+                }
+            }
+        }
+        //remove cider and butter
+        for (int i = 0; i < butter_count; i++) {
+            for (int j = 0; j < getHand().size(); j++) {
+                if (getHand().getElementAt(j).getType() == CardType.BUTTER) {
+                    getHand().removeElement(j);
+                    break;
+                }
+            }
+        }
+        for (int i = 0; i < cider_count; i++) {
+            for (int j = 0; j < getHand().size(); j++) {
+                if (getHand().getElementAt(j).getType() == CardType.CIDER) {
+                    getHand().removeElement(j);
+                    break;
+                }
+            }
+        }
+        //remove pan
+        putPanDown();
+        return true;
     }
 
     public boolean sellMushrooms(String cardname, int number) {
