@@ -187,8 +187,8 @@ public class Player {
                     break;
             }
         }
-        for (int i = 0; i < this.d.size(); i++) {
-            if (this.d.getElementAt(i).getType() == CardType.PAN) {
+        for (int i = 0; i < getDisplay().size(); i++) {
+            if (getDisplay().getElementAt(i).getType() == CardType.PAN) {
                 haspan = true;
                 break;
             }
@@ -242,9 +242,7 @@ public class Player {
         int day_card_count = 0;
         int night_card_count = 0;
         int stick_gain = 0;
-        cardname = cardname.toLowerCase();
-        cardname = cardname.replace(" ", "");
-        cardname = cardname.replace("'", "");
+        cardname = cardname.toLowerCase().replace(" ", "").replace("'", "");
         for (int i = 0; i < getHand().size(); i++) {
             if (getHand().getElementAt(i).getName().equals(cardname)) {
                 if (getHand().getElementAt(i).getType() == CardType.DAYMUSHROOM) {
