@@ -39,19 +39,12 @@ public class Player {
 
     public void removeSticks(int num) {
         this.sticks -= num;
-        int count = 0;
-        int index = -1;
-        while (count < num) {
-            for (int i = 0; i < getDisplay().size(); i++) {
-                if (getDisplay().getElementAt(i).getType() == CardType.STICK) {
-                    count++;
-                    index = i;
+        for (int i = 0; i < num; i++) {
+            for (int j = 0; j < getDisplay().size(); j++) {
+                if (getDisplay().getElementAt(j).getType() == CardType.STICK) {
+                    getDisplay().removeElement(j);
                     break;
                 }
-            }
-            if (index != -1) {
-                getDisplay().removeElement(index);
-                index = -1;
             }
         }
     }
@@ -125,9 +118,7 @@ public class Player {
         }
         int cycle = Board.getDecayPile().size();
         for (int i = 0; i < cycle; i++) {
-            Card card = Board.getDecayPile().get(0);
-            CardType type = card.getType();
-            switch (type) {
+            switch (Board.getDecayPile().get(0).getType()) {
                 case BASKET:
                     addCardtoDisplay(Board.getDecayPile().remove(0));
                     handlimit += 2;
@@ -208,26 +199,9 @@ public class Player {
         }
         score += flavourpoints;
         //remove mushroom card from hand
-        for (int i = 0; i < night_card_count + day_card_count; i++) {
+        for (int i=0;i<cards.size();i++){
             for (int j = 0; j < getHand().size(); j++) {
-                if (getHand().getElementAt(j).getName().equals(tmp.getName()) && getHand().getElementAt(j).getType() == tmp.getType()) {
-                    getHand().removeElement(j);
-                    break;
-                }
-            }
-        }
-        //remove cider and butter
-        for (int i = 0; i < butter_count; i++) {
-            for (int j = 0; j < getHand().size(); j++) {
-                if (getHand().getElementAt(j).getType() == CardType.BUTTER) {
-                    getHand().removeElement(j);
-                    break;
-                }
-            }
-        }
-        for (int i = 0; i < cider_count; i++) {
-            for (int j = 0; j < getHand().size(); j++) {
-                if (getHand().getElementAt(j).getType() == CardType.CIDER) {
+                if (getHand().getElementAt(j)==cards.get(j)) {
                     getHand().removeElement(j);
                     break;
                 }
@@ -281,17 +255,12 @@ public class Player {
     }
 
     public boolean putPanDown() {
-        int pan_index = -1;
         for (int i = 0; i < getHand().size(); i++) {
             if (getHand().getElementAt(i).getType() == CardType.PAN) {
-                pan_index = i;
-                break;
+                addCardtoDisplay(getHand().removeElement(i));
+                return true;
             }
         }
-        if (pan_index == -1) {
-            return false;
-        }
-        addCardtoDisplay(getHand().removeElement(pan_index));
-        return true;
+        return false;
     }
 }
