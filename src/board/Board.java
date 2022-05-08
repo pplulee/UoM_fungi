@@ -94,8 +94,7 @@ public class Board {
         if (decayPile.size() == 4) {
             decayPile.clear();
         }
-        decayPile.add(forest.getElementAt(7));
-        forest.removeCardAt(1);
+        decayPile.add(forest.removeCardAt(1));
         forest.add(forestCardPile.drawCard());
     }
 }
